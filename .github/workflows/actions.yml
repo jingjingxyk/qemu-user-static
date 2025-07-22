@@ -26,10 +26,12 @@ jobs:
       - name: Set variables
         run: |
           echo "DOCKER_REPO=docker.io/$GITHUB_REPOSITORY" >> $GITHUB_ENV
-      - name: Build
+      - name: Prepare Build
         run: |
           wget --content-disposition http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
           dpkg-deb -R qemu-user-static_*.deb releases
+      - name: Build
+        run: |
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"
       - name: Test
         run: ./test.sh -d "${{ env.DOCKER_REPO }}"
