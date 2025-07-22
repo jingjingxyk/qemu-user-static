@@ -28,7 +28,10 @@ jobs:
           echo "DOCKER_REPO=docker.io/$GITHUB_REPOSITORY" >> $GITHUB_ENV
       - name: Prepare Build
         run: |
-          wget --content-disposition http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
+          # Debian mirrors backed by Fastly CDN
+          # https://ftp.debian.org/
+          # wget --content-disposition http://cdn-fastly.deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
+          wget --content-disposition http://deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
           dpkg-deb -R qemu-user-static_*.deb releases
           ls -lha releases
           ls -lha releases/usr/bin/
