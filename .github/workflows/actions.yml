@@ -34,7 +34,9 @@ jobs:
           wget --content-disposition http://deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
           dpkg-deb -R qemu-user-static_*.deb releases
           ls -lha releases
+          ls -lha releases/DEBIAN/
           ls -lha releases/usr/bin/
+          du -h -d 1 releases/usr/bin/
           ls -lha releases/usr/bin/qemu-aarch64-static
           file releases/usr/bin/qemu-aarch64-static
       - name: Build
