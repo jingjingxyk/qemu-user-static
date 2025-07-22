@@ -19,7 +19,7 @@ jobs:
   qemu-user-static:
     runs-on: ubuntu-latest
     env:
-      VERSION: 10.0.2
+      VERSION: 7.2.17
       ORIGIN_VERSION: 7.2+dfsg-7+deb12u13+b1
     steps:
       - uses: actions/checkout@v2

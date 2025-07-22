@@ -42,6 +42,7 @@ cp -p "${out_dir}/latest/register.sh" "${out_dir}/register/"
 cp -p "${out_dir}/latest/Dockerfile" "${out_dir}/register/"
 # Comment out the line to copy qemu-*-static not to provide those.
 sed -i '/^COPY qemu/ s/^/#/' "${out_dir}/register/Dockerfile"
+sed -i "s/master/${TAG_VER}/" "${out_dir}/register/Dockerfile"
 
 for file in ${releases_dir}*
 do
