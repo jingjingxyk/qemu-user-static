@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VERSION: 10.0.2
-      ORIGIN_VERSION: 10.0.0+ds-2~bpo12+2
+      ORIGIN_VERSION: 7.2+dfsg-7+deb12u13+b1
     steps:
       - uses: actions/checkout@v2
       - name: Set variables
