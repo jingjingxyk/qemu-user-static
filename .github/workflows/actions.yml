@@ -32,6 +32,8 @@ jobs:
           dpkg-deb -R qemu-user-static_*.deb releases
           ls -lha releases
           ls -lha releases/usr/bin/
+          ls -lha releases/usr/bin/qemu-aarch64-static
+          file releases/usr/bin/qemu-aarch64-static
       - name: Build
         run: |
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"
