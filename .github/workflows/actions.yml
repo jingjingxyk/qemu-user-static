@@ -39,6 +39,11 @@ jobs:
           du -h -d 1 releases/usr/bin/
           ls -lha releases/usr/bin/qemu-aarch64-static
           file releases/usr/bin/qemu-aarch64-static
+
+      - name: Show Container Images
+        run: |
+          docker buildx ls
+          docker images
       - name: Build
         run: |
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"
