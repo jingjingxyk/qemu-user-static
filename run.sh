@@ -42,6 +42,7 @@ cp -p "${out_dir}/latest/register.sh" "${out_dir}/register/"
 cp -p "${out_dir}/latest/Dockerfile" "${out_dir}/register/"
 # Comment out the line to copy qemu-*-static not to provide those.
 sed -i '/^COPY qemu/ s/^/#/' "${out_dir}/register/Dockerfile"
+sed -i "s/master/${TAG_VER}/" "${out_dir}/register/Dockerfile"
 
 for file in ${releases_dir}*
 do
@@ -50,8 +51,9 @@ do
         if [ "$from_arch" != "$to_arch" ]; then
             work_dir="${out_dir}/${from_arch}_qemu-${to_arch}"
             mkdir -p "${work_dir}"
-            cp -p "${releases_dir}qemu-${to_arch}-static" ${work_dir}
-            cp -p "${work_dir}/qemu-${to_arch}-static" "${out_dir}/latest/"
+            ls -lha "${releases_dir}qemu-${to_arch}-static"
+            cp -l -p "${releases_dir}qemu-${to_arch}-static" ${work_dir}
+            cp -l -p "${work_dir}/qemu-${to_arch}-static" "${out_dir}/latest/"
             cat > ${work_dir}/Dockerfile -<<EOF
 FROM scratch
 COPY qemu-${to_arch}-static /usr/bin/

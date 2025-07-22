@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - feature-qemu-10
     paths:
       - containers/**
       - .github/workflows/actions.yml
@@ -18,22 +19,38 @@ jobs:
   qemu-user-static:
     runs-on: ubuntu-latest
     env:
-      VERSION: 7.2.0-1
-      ORIGIN_VERSION: 7.2+dfsg-1~bpo11+2
+      VERSION: v7.2.17
+      ORIGIN_VERSION: 7.2+dfsg-7+deb12u13+b1
     steps:
       - uses: actions/checkout@v2
       - name: Set variables
         run: |
           echo "DOCKER_REPO=docker.io/$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      - name: Prepare Build
+        run: |
+          # Debian mirrors backed by Fastly CDN
+          # https://ftp.debian.org/
+          # wget --content-disposition http://cdn-fastly.deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
+          wget --content-disposition http://deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
+          dpkg-deb -R qemu-user-static_*.deb releases
+          ls -lha releases
+          ls -lha releases/DEBIAN/
+          ls -lha releases/usr/bin/
+          du -h -d 1 releases/usr/bin/
+          ls -lha releases/usr/bin/qemu-aarch64-static
+          file releases/usr/bin/qemu-aarch64-static
+
+      - name: Show Container Images
+        run: |
+          docker buildx ls
+          docker images
       - name: Build
         run: |
-          wget --content-disposition http://ftp.de.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
-          dpkg-deb -R qemu-user-static_*.deb releases
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"
       - name: Test
         run: ./test.sh -d "${{ env.DOCKER_REPO }}"
       - name: Publish
-        if: github.ref == 'refs/heads/master'
+        if: ${{ 0 && github.ref == 'refs/heads/master' }}
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
           docker push --all-tags ${{ env.DOCKER_REPO }}
