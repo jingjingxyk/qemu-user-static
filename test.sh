@@ -37,8 +37,8 @@ RUN apk update  && \
 EOF
 
 # It should output the result of "uname -m".
-docker pull arm64v8/fedora
-docker run --rm -t arm64v8/fedora uname -m
+docker pull --platform "linux/arm64" almalinux:latest
+docker run --rm -t almalinux:latest uname -m
 # It should install a package.
 # TODO: Comment out as it takes a time.
 # docker build --rm -t "test/latest/fedora" -<<EOF
