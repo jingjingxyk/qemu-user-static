@@ -50,6 +50,7 @@ do
         if [ "$from_arch" != "$to_arch" ]; then
             work_dir="${out_dir}/${from_arch}_qemu-${to_arch}"
             mkdir -p "${work_dir}"
+            ls -lha "${releases_dir}qemu-${to_arch}-static"
             cp -p "${releases_dir}qemu-${to_arch}-static" ${work_dir}
             cp -p "${work_dir}/qemu-${to_arch}-static" "${out_dir}/latest/"
             cat > ${work_dir}/Dockerfile -<<EOF
