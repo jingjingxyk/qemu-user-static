@@ -66,7 +66,7 @@ docker run --rm -t ${DOCKER_REPO}:x86_64-aarch64 /usr/bin/qemu-aarch64-static --
 
 # ------------------------------------------------
 # Integration test
-docker build --platform "linux/arm64/v8" --rm -t "test/integration/ubuntu" -<<EOF
+docker build  --rm -t "test/integration/ubuntu" -<<EOF
 FROM ${DOCKER_REPO}:x86_64-aarch64 as qemu
 FROM ubuntu:latest
 COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
